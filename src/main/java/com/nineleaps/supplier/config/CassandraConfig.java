@@ -13,19 +13,19 @@ import org.springframework.data.cassandra.core.mapping.SimpleUserTypeResolver;
 @Configuration
 public class CassandraConfig extends AbstractCassandraConfiguration {
 
-	@Value("${cassandra.database.keyspace-name}")
+	@Value("${spring.data.cassandra.keyspace-name}")
 	private String keySpace;
 
-	@Value("${cassandra.database.contact-points}")
+	@Value("${spring.data.cassandra.contact-points}")
 	private String contactPoints;
 
-	@Value("${cassandra.database.port}")
+	@Value("${spring.data.cassandra.port}")
 	private int port;
 
-	@Value("${cassandra.database.username}")
+	@Value("${spring.data.cassandra.username}")
 	private String userName;
 
-	@Value("${cassandra.database.password}")
+	@Value("${spring.data.cassandra.password}")
 	private String password;
 
 	@Override

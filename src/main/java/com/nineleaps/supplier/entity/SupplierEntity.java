@@ -13,7 +13,7 @@ import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
 import org.springframework.data.cassandra.core.mapping.Table;
 
 
-@Table("product_supplier")
+@Table("supplier")
 
 public class SupplierEntity implements Serializable {
 
