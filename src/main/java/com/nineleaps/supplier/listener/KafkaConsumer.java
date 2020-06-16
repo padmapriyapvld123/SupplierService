@@ -95,25 +95,24 @@ public class KafkaConsumer {
 
 
     @KafkaListener(topics = "Kafka_Order_test3", groupId = "group_json",
-            containerFactory = "kafkaListenerContainerFactory")
-    public void consumeJson(@Payload String order) {
+            containerFactory = "supplierKafkaListenerFactory")
+    public void consumeJson(OrderConsumer order) {
     	 JSONObject jsonObj = new JSONObject(order);
     	 OrderConsumer orderConsumer =null;
-    	 ObjectMapper mapper = new ObjectMapper();
+    	/* ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+			mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);*/
 
 			try {
-				orderConsumer = mapper.readValue(jsonObj.toString(), OrderConsumer.class);
-				Map<String,OrderDetails> suppliermap =getSupplierDetails(orderConsumer);
+				//orderConsumer = mapper.readValue(jsonObj.toString(), OrderConsumer.class);
+				Map<String,OrderDetails> suppliermap =getSupplierDetails(order);
 				sendEmail(suppliermap);
-			} catch (JsonParseException e) {
+			/* catch (JsonParseException e) {
 				logger.error("JsonParseException", e);
 			} catch (JsonMappingException e) {
 				logger.error("JsonMappingException", e);
 
-			} catch (IOException e) {
-				logger.error("IOException", e);
+			*/
 			} catch (NoContentException e) {
 				logger.error("IOException", e);
 			}

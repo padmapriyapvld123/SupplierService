@@ -7,10 +7,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.cassandra.config.AbstractCassandraConfiguration;
 import org.springframework.data.cassandra.config.CassandraClusterFactoryBean;
+import org.springframework.data.cassandra.config.SchemaAction;
 import org.springframework.data.cassandra.core.mapping.CassandraMappingContext;
 import org.springframework.data.cassandra.core.mapping.SimpleUserTypeResolver;
+import org.springframework.data.cassandra.repository.config.EnableCassandraRepositories;
 
 @Configuration
+@EnableCassandraRepositories
 public class CassandraConfig extends AbstractCassandraConfiguration {
 
 	@Value("${spring.data.cassandra.keyspace-name}")
@@ -27,26 +30,38 @@ public class CassandraConfig extends AbstractCassandraConfiguration {
 
 	@Value("${spring.data.cassandra.password}")
 	private String password;
+	
+	 @Value("${cassandra.basePackages}")
+	  private String basePackages;
 
 	@Override
-	protected String getKeyspaceName() {
-		return keySpace;
-	}
+	  protected String getKeyspaceName() {
+	    return keySpace;
+	  }
 
-	@Override
-	public CassandraMappingContext cassandraMapping() throws ClassNotFoundException {
-		CassandraMappingContext context = new CassandraMappingContext();
-		context.setUserTypeResolver(new SimpleUserTypeResolver(cluster().getObject(), keySpace));
-		return context;
-	}
+	  @Override
+	  protected String getContactPoints() {
+	    return contactPoints;
+	  }
 
-	@Bean
-	public CassandraClusterFactoryBean cluster() {
-		CassandraClusterFactoryBean cluster = new CassandraClusterFactoryBean();
-		cluster.setUsername(userName);
-		cluster.setPassword(password);
-		cluster.setContactPoints(contactPoints);
-		cluster.setPort(port);
-		return cluster;
-	}
+	  @Override
+	  protected int getPort() {
+	    return port;
+	  }
+
+	  @Override
+	  public SchemaAction getSchemaAction() {
+	    return SchemaAction.CREATE_IF_NOT_EXISTS;
+	  }
+
+	  @Override
+	  public String[] getEntityBasePackages() {
+	    return new String[] {basePackages};
+	  }
+	  
+	  @Override
+	  protected boolean getMetricsEnabled() { return false; }
+	  
 }
+
+	
