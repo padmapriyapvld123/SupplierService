@@ -132,7 +132,7 @@ public class KafkaConsumer {
 	public void sendEmailToSuppliers(String supplierId,OrderDetails orderDetails) {
 		SendEmail sendEmail = new SendEmail();
 		
-		sendEmail.sendEmailToSupplier(supplierId,orderDetails);
+		sendEmail.sendEmailToSupplier(propertyConfiguration,supplierId,orderDetails);
 			
 	}
 

@@ -3,6 +3,10 @@ package com.nineleaps.supplier.email;
 import java.util.*; 
 import javax.mail.*; 
 import javax.mail.internet.*;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.nineleaps.supplier.config.PropertyConfiguration;
 import com.nineleaps.supplier.model.OrderDetails;
 
 import javax.activation.*; 
@@ -10,10 +14,13 @@ import javax.activation.*;
   
 public class SendEmail  
 { 
-  public void sendEmailToSupplier(String supplierId,OrderDetails orderDetails) {
+  public void sendEmailToSupplier(PropertyConfiguration propertyConfiguration,String supplierId,OrderDetails orderDetails) {
 
       final String username = System.getenv("USERNAME");
       final String password = System.getenv("PASSWORD");
+	  
+      
+    
 
       Properties prop = new Properties();
       prop.put("mail.smtp.host", "smtp.gmail.com");

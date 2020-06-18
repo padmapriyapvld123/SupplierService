@@ -16,7 +16,11 @@ public class PropertyConfiguration {
 	@Value("${PRODUCT_URL}")
 	private String productUrl;
 	
+	@Value("${testpoc.username}")
+	private String userName;
 	
+	@Value("${testpoc.password}")
+	private String password;
 
 	public String getProductUrl() {
 		return productUrl;
@@ -26,6 +30,25 @@ public class PropertyConfiguration {
 		this.productUrl = productUrl;
 	}
 
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
+	
+	
+	
 	
 
 }
