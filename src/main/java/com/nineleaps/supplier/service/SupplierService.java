@@ -3,14 +3,17 @@ package com.nineleaps.supplier.service;
 
 import java.util.Optional;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 
 import com.nineleaps.supplier.entity.SupplierEntity;
 
 import com.nineleaps.supplier.exception.NoContentException;
+import com.nineleaps.supplier.model.Product;
 import com.nineleaps.supplier.model.Supplier;
 import com.nineleaps.supplier.repository.SupplierRepository;
 
@@ -19,6 +22,9 @@ public class SupplierService {
 
 	@Autowired
 	private SupplierRepository supplierRepository;
+	
+
+	
 
 	public Supplier saveIntoSupplierTable(Supplier supplier) {
 		SupplierEntity entity = supplierRepository.save(mapObjectToEntity(supplier));
@@ -62,4 +68,5 @@ public class SupplierService {
 		  return mapEntityToObject(entity);
 		 
 }
+
 }

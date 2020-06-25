@@ -30,12 +30,18 @@ import com.nineleaps.supplier.service.SupplierService;
 @RequestMapping("/supplier")
 public class SupplierController {
 
-	@Autowired
+	
 	private SupplierService supplierService;
 	
 	@Autowired
+    public void setSupplierService(SupplierService supplierService) {
+        this.supplierService = supplierService;
+    }
+	
+	@Autowired
 	private SupplierRepository supplierRepository;
-
+	
+	
 	@PostMapping("/save")
 	public ResponseEntity<Supplier> saveIntoSupplierTable(@RequestBody Supplier supplier) {
 		return new ResponseEntity<>(supplierService.saveIntoSupplierTable(supplier), HttpStatus.OK);
@@ -81,15 +87,17 @@ public class SupplierController {
 	}
 	
 	@GetMapping("/getAllSuppliers")
-	public ResponseEntity<List<SupplierEntity>> getAllSuppliers() {
+	public ResponseEntity<?> getAllSuppliers() {
 	  try {
 	    List<SupplierEntity> suppliers = new ArrayList<SupplierEntity>();
 
+	    if(supplierRepository!=null) {
 	   
 	      supplierRepository.findAll().forEach(suppliers::add);
+	    }
 	    
 	    if (suppliers.isEmpty()) {
-	      return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	      return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
 	    }
 
 	    return new ResponseEntity<>(suppliers, HttpStatus.OK);
