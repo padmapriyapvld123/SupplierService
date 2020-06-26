@@ -1,7 +1,5 @@
 package com.nineleaps.supplier;
 
-
-
 import org.cassandraunit.spring.CassandraDataSet;
 
 import org.cassandraunit.spring.CassandraUnit;
@@ -65,7 +63,7 @@ public class SupplierServiceTest {
 	private MockMvc mockMvc;
 
 	@Autowired
-	private SupplierService supplierService ;
+	private SupplierService supplierService;
 
 	@Autowired
 	private SupplierRepository supplierRepository;
@@ -85,47 +83,61 @@ public class SupplierServiceTest {
 
 	}
 
-	//@Test
+
+	@Test
+	public void saveSupplier() throws Exception {
+
+		SupplierEntity supplier = new SupplierEntity("test2", "test2", "test2");
+
+		mockMvc.perform(MockMvcRequestBuilders.post("/supplier/save").content(asJsonString(supplier))
+				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+				.andExpect(MockMvcResultMatchers.jsonPath("$.supplierId").exists());
+
+	}
+	
+	@Test
 	public void getSupplierById() throws Exception {
 
-		mockMvc.perform(get("/supplier/{id}","test").contentType(MediaType.APPLICATION_JSON))
+		mockMvc.perform(get("/supplier/{id}", "test2").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
 
 	}
 
-	//@Test
+	@Test
 	public void givenAllSuppliers() throws Exception {
 
-		SupplierEntity supplier = new SupplierEntity("test", "test", "test");
+		SupplierEntity supplier = new SupplierEntity("test2", "test2", "test2");
 
 		mockMvc.perform(get("/supplier/getAllSuppliers").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk()).andExpect(jsonPath("$[0].name").value(supplier.getName()));
+				.andExpect(status().isOk());
+	}
+
+
+	@Test
+	public void updateSupplierAPI() throws Exception {
+		SupplierEntity supplier = new SupplierEntity("test2", "email2", "name2");
+
+		mockMvc.perform(MockMvcRequestBuilders.put("/supplier/updateSupplier/{id}", "test2")
+				.content(asJsonString(supplier))
+				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(MockMvcResultMatchers.jsonPath("$.email").value(supplier.getEmail()))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.name").value(supplier.getName()));
 	}
 	
 	@Test
-	public void saveSupplier() throws Exception {
-		
-		SupplierEntity supplier = new SupplierEntity("test2", "test2", "test2");
-		
-		mockMvc.perform( MockMvcRequestBuilders
-			      .post("/supplier/save")
-			      .content(asJsonString(supplier))
-			      .contentType(MediaType.APPLICATION_JSON)
-			      .accept(MediaType.APPLICATION_JSON))
-			      .andExpect(status().isOk())
-			     .andExpect(MockMvcResultMatchers.jsonPath("$.supplierId").exists());
-
-
-		
+	public void deleteSupplierAPI() throws Exception 
+	{
+		mockMvc.perform( MockMvcRequestBuilders.delete("/supplier/deleteSupplier/{id}", "test2") )
+	        .andExpect(status().isNoContent());
 	}
-	
-    public static String asJsonString(final Object obj) {
-        try {
-            return new ObjectMapper().writeValueAsString(obj);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
 
+	public static String asJsonString(final Object obj) {
+		try {
+			return new ObjectMapper().writeValueAsString(obj);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
 
 }
